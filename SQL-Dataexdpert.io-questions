@@ -1,0 +1,19 @@
+Question: Using table playground.suspect, filter out suspects who cannot be the bank robber based on the following clues: the robber is not taller than 170cm, and their name matches the pattern "B. Gre?n" where the first letter of the name is "B" or "b" and the surname is similar to "Green" but with the fourth letter being unreadable and potentially any character. The match should be case-insensitive. 
+For each suspect that fits these criteria, select their id, name, and surname. Order the results by suspect id in ascending order.	
+
+Answer:
+SELECT * 
+FROM playground.suspect 
+WHERE height <=170 AND UPPER(Name) LIKE 'B%'
+AND UPPER(surname) LIKE 'GRE_N$'
+
+
+Question: Using the table playground.views, write a SQL query to identify all viewers who viewed more than one article on the same day. The table includes columns viewer_id (the ID of the viewer), article_id (the ID of the article viewed), and view_date (the date of the view). 
+The result should contain a single column named viewer_id, listing each viewer who meets the criteria without duplicates, and should be sorted in ascending order of viewer_id.
+
+Answer:
+SELECT viewer_id
+FROM playground.views 
+group by viewer_id, view_date 
+having count( distinct article_id) > 1
+ORDER BY viewer_id ASC;npot
