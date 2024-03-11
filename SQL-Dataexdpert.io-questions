@@ -1,4 +1,4 @@
-Question: Using table playground.suspect, filter out suspects who cannot be the bank robber based on the following clues: the robber is not taller than 170cm, and their name matches the pattern "B. Gre?n" where the first letter of the name is "B" or "b" and the surname is similar to "Green" but with the fourth letter being unreadable and potentially any character. The match should be case-insensitive. 
+Question1: Using table playground.suspect, filter out suspects who cannot be the bank robber based on the following clues: the robber is not taller than 170cm, and their name matches the pattern "B. Gre?n" where the first letter of the name is "B" or "b" and the surname is similar to "Green" but with the fourth letter being unreadable and potentially any character. The match should be case-insensitive. 
 For each suspect that fits these criteria, select their id, name, and surname. Order the results by suspect id in ascending order.	
 
 Answer:
@@ -8,7 +8,7 @@ WHERE height <=170 AND UPPER(Name) LIKE 'B%'
 AND UPPER(surname) LIKE 'GRE_N$'
 
 
-Question: Using the table playground.views, write a SQL query to identify all viewers who viewed more than one article on the same day. The table includes columns viewer_id (the ID of the viewer), article_id (the ID of the article viewed), and view_date (the date of the view). 
+Question2: Using the table playground.views, write a SQL query to identify all viewers who viewed more than one article on the same day. The table includes columns viewer_id (the ID of the viewer), article_id (the ID of the article viewed), and view_date (the date of the view). 
 The result should contain a single column named viewer_id, listing each viewer who meets the criteria without duplicates, and should be sorted in ascending order of viewer_id.
 
 Answer:
@@ -18,7 +18,7 @@ group by viewer_id, view_date
 having count( distinct article_id) > 1
 ORDER BY viewer_id ASC;
 
-Question: Create a SQL query to evaluate test answers stored in a table named playground.answers with columns id (unique question ID), correct_answer (string), and given_answer (which can be NULL). 
+Question3: Create a SQL query to evaluate test answers stored in a table named playground.answers with columns id (unique question ID), correct_answer (string), and given_answer (which can be NULL). 
 Return a table with columns id and checks, where checks is "no answer" if given_answer is NULL, "correct" if given_answer matches correct_answer, and "incorrect" otherwise. Order the results by id.
 
 Answer: 
@@ -33,6 +33,47 @@ CASE
 
 
 
+Question 4: Month with the Highest Total Births
+ Determine the month with the highest total number of births in the playground.us_birth_stats table. The output should show the month and the total number of births.
 
+Answer:
+SELECT month, sum(births) AS  total_births
+ FROM playground.us_birth_stats
+GROUP BY month
+ORDER BY total_births DESC
+LIMIT 1;
+
+
+Question 5:Write a SQL query to calculate the total number of births recorded for each year in the playground.us_birth_stats table. Order the results by year.
+Answer: 
+SELECT year, sum(births) as total_births 
+FROM playground.us_birth_stats 
+group by year
+order by year
+
+
+
+Question 6:
+Given a table Successors with columns: name, birthday, and gender, write a SQL query to list the names of the King's children in order of their succession to the throne and their birthday("name", "birthday"). 
+Succession is based on age seniority. Prefix the name with "King" for males and "Queen" for females.
+The result should be sorted by birthday in ascending order to determine the succession order.
+
+
+Anwer: 
+SELECT 
+case 
+WHEN gender = 'F' AND name LIKE 'Queen%'
+THEN replace(name,'Queen', 'Queen ') 
+WHEN gender = 'F' and name not like 'Queen%' 
+THEN concat('Queen ', name)
+WHEN gender = 'M' and name LIKE 'King%' 
+THEN replace(name, 'King', 'King ') 
+when gender = 'M' and name not like 'King%' 
+THEN concat('King ', name)
+end as name, 
+birthday, 
+gender
+FROM playground.successors
+ORDER BY birthday asc 
 
 
