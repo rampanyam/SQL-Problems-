@@ -97,3 +97,18 @@ having count(order_id) > 20
 order by count(order_id) DESC ,customer_name asc
 
 
+
+Question 8: 
+
+Given tables clubs (id: unique club id, name: club name) and students (id: unique student id, name: student name, club_id: club's id),
+return a list from the students table for those who are in clubs that still exist in the clubs table. The result should have three columns (id, name, club_id)
+and be sorted by students' ids (id) and include only those students whose club_id matches an id in the clubs table.
+These are the tables for this question:
+
+Answer: 
+SELECT s.*
+ FROM playground.students s JOIN playground.clubs as c on c.id = s.club_id 
+order by s.id asc
+
+
+
