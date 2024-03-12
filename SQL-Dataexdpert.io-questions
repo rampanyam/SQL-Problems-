@@ -77,3 +77,23 @@ FROM playground.successors
 ORDER BY birthday asc 
 
 
+
+Question 7: 
+Customers with More Than 25 Orders
+ 
+Write a SQL query to display all loyal customers from the playground.superstore table. A customer is considered loyal if they have placed more than 20 orders. 
+The query should return the customer ID, customer name, and the total number of orders for each of these customers.
+Display the result in descending order of their orders and then ascending order of their names
+'
+
+SELECT customer_id , 
+        customer_name, 
+        count(order_id) as order_count
+FROM playground.superstore
+group by 
+customer_id, 
+customer_name
+having count(order_id) > 20  
+order by count(order_id) DESC ,customer_name asc
+
+
