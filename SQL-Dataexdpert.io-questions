@@ -112,3 +112,40 @@ order by s.id asc
 
 
 
+
+Question 09: 
+Given two tables, playground.employees and playground.departments, with employees containing id, full_name, and department, and departments containing id (unique department ID) 
+and dep_name (department name),write a SQL query to build a table with one column, dep_name. This table should list all the departments that currently have no employees, sorted by the department id.
+
+Answer: 
+
+
+SELECT d.dep_name
+ FROM playground.departments d  
+LEFT JOIN playground.employees e  
+on e.department = d.id 
+where e.id is null
+order by d.id asc
+
+
+Question 10: 
+Select Rows With Maximum Revenue
+ 
+Using the table playground.revenue, write a SQL query to select rows from a given table that have the maximum revenue value for each id. The resultant table should have three columns - "id", "rev", "content". Additionally, the results should be ordered in descending order by revenue.
+
+These are the tables for this question:
+playground.revenue
+
+
+
+Answer:
+WITH MaxRev AS (
+SELECT id, max(rev) as maxrev 
+FROM playground.revenue 
+group by id
+)
+SELECT r.* FROM playground.revenue r 
+join MaxRev as mr on mr.id = r.id
+AND mr.maxrev = r.rev 
+order by r.rev desc
+
