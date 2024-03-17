@@ -8,3 +8,36 @@ FROM Numbers
 WHERE Number  < 10
 )
 SELECT * FROM Numbers;
+
+
+Question-2: Using Recursive CTE , display employee their maanger Id and their level of hirearchy
+
+Answer: 
+
+-- Insert some sample data
+DROP TABLE IF EXISTS #Employees; 
+CREATE TABLE #Employees ( EmployeeID   INT ,  EmployeeName NVARCHAR(MAX), ManagerID INT)
+INSERT INTO #Employees (EmployeeID, EmployeeName, ManagerID)
+VALUES (1, 'Alice', NULL),
+       (2, 'Bob', 1),
+       (3, 'Charlie', 2),
+       (4, 'David', 2),
+       (5, 'Emma', 4);
+
+
+
+
+-- Query to recursively retrieve employee hierarchy
+WITH RecursiveEmployeeCTE AS (
+    SELECT EmployeeID, EmployeeName, ManagerID, 0 AS Level
+    FROM #Employees
+    WHERE ManagerID IS NULL
+    UNION ALL
+    SELECT e.EmployeeID, e.EmployeeName, e.ManagerID, rec.Level + 1
+    FROM #Employees e
+    INNER JOIN RecursiveEmployeeCTE rec ON e.ManagerID = rec.EmployeeID
+)
+SELECT EmployeeID, EmployeeName, ManagerID, Level
+FROM RecursiveEmployeeCTE
+ORDER BY Level, EmployeeID;
+
