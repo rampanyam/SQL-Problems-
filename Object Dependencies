@@ -1,0 +1,25 @@
+/* 
+  How to find the objects which are dependent on your SQL View / Table / or stored procedure ? 
+  Use the following code: 
+
+*/ 
+ 
+SELECT 
+    referencing_schema.name AS DependentSchemaName,
+    referencing_object.name AS DependentObjectName,
+    referencing_object.type_desc AS DependentObjectType,
+    referenced_schema.name AS ReferencedSchemaName,
+    referenced_object.name AS ReferencedObjectName
+FROM 
+    sys.sql_expression_dependencies AS sed
+    INNER JOIN sys.objects AS referencing_object
+        ON sed.referencing_id = referencing_object.object_id
+    INNER JOIN sys.schemas AS referencing_schema
+        ON referencing_object.schema_id = referencing_schema.schema_id
+    INNER JOIN sys.objects AS referenced_object
+        ON sed.referenced_id = referenced_object.object_id
+    INNER JOIN sys.schemas AS referenced_schema
+        ON referenced_object.schema_id = referenced_schema.schema_id
+WHERE 
+    (sed.referenced_entity_name = ''  --- table / stored proc / view name 
+  and referenced_Schema.name = '' )  --- schema associated with the object. 
